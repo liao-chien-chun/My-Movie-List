@@ -4,16 +4,17 @@ const POSTER_URL = BASE_URL + '/posters/'
 
 //存放電影資料
 const movies = []
-
 //選出節點
 const dataPanel = document.querySelector('#data-panel')
-
+//取得表單節點
 const searchForm = document.querySelector('#search-form')
+//取得input節點
+const searchInput = document.querySelector('#search-input')
 
 //渲染電影清單
 function renderMovieList(data) {
   let rawhtml = ''
-  movies.forEach(item => {
+  data.forEach(item => {
     //title, image, id 
     rawhtml += `
       <div class="col-sm-3">
@@ -71,8 +72,31 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
 
 //提交表單監聽器
 searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
+  //取消預設事件
   event.preventDefault()
-  console.log('click')
+  //用.value取得input的值,用trim()把空格去掉，全部轉成小寫方便比對
+  const keyword = searchInput.value.trim().toLowerCase()
+  //儲存符合塞選條件的項目
+  let filteredMovies = []
+
+  //塞選條件法一
+  // for (let movie of movies) {
+  //   if (movie.title.toLowerCase().includes(keyword)) {
+  //     filteredMovies.push(movie)
+  //   }
+  // }
+  //塞選條件法二 filter
+  filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(keyword))
+
+  //錯誤處理
+  // if (!keyword.length) {
+  //   return alert('請輸入有效字串')
+  // }
+  if (filteredMovies.length === 0) {
+    return alert(`您輸入的關鍵字： ${keyword} 沒有符合條件的電影`)
+  }
+
+  renderMovieList(filteredMovies)
 })
 
 //取得電影資料
