@@ -17,6 +17,8 @@ const paginator = document.querySelector('#paginator')
 //每頁只12頁
 const MOVIES_PER_PAHE = 12
 
+let filteredMovies = []
+
 //渲染電影清單
 function renderMovieList(data) {
   let rawhtml = ''
@@ -82,8 +84,9 @@ function addToFavorite (id) {
 
 //function get movie page
 function getMoviesByPage (page) {
+  const data = filteredMovies.length ? filteredMovies : movies
   const startIndex = (page - 1) * MOVIES_PER_PAHE
-  return movies.slice(startIndex, startIndex + MOVIES_PER_PAHE)
+  return data.slice(startIndex, startIndex + MOVIES_PER_PAHE)
 }
 
 //function renderPagination
@@ -118,7 +121,7 @@ searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
   //用.value取得input的值,用trim()把空格去掉，全部轉成小寫方便比對
   const keyword = searchInput.value.trim().toLowerCase()
   //儲存符合塞選條件的項目
-  let filteredMovies = []
+  // let filteredMovies = []
 
   //塞選條件法一
   // for (let movie of movies) {
@@ -137,7 +140,18 @@ searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
     return alert(`您輸入的關鍵字： ${keyword} 沒有符合條件的電影`)
   }
 
-  renderMovieList(filteredMovies)
+  renderPaginator(filteredMovies.length)
+  renderMovieList(getMoviesByPage(1))
+})
+
+//分頁監聽器
+paginator.addEventListener('click', function onPaginatorClicled(event) {
+  //如果點擊的不是Ａ標籤結束
+  if (event.target.tagName !== 'A') return
+
+  //透過dataset
+  const page = Number(event.target.dataset.page)
+  renderMovieList(getMoviesByPage(page))
 })
 
 //取得電影資料
