@@ -8,6 +8,8 @@ const movies = []
 //選出節點
 const dataPanel = document.querySelector('#data-panel')
 
+const searchForm = document.querySelector('#search-form')
+
 //渲染電影清單
 function renderMovieList(data) {
   let rawhtml = ''
@@ -65,6 +67,12 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.matches('.btn-show-movie')) {
     showMovieModal(Number(event.target.dataset.id))
   }
+})
+
+//提交表單監聽器
+searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
+  event.preventDefault()
+  console.log('click')
 })
 
 //取得電影資料
