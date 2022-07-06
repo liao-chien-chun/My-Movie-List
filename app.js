@@ -11,6 +11,12 @@ const searchForm = document.querySelector('#search-form')
 //取得input節點
 const searchInput = document.querySelector('#search-input')
 
+//取得分頁節點
+const paginator = document.querySelector('#paginator')
+
+//每頁只12頁
+const MOVIES_PER_PAHE = 12
+
 //渲染電影清單
 function renderMovieList(data) {
   let rawhtml = ''
@@ -74,6 +80,28 @@ function addToFavorite (id) {
   localStorage.setItem('favoriteMovies', JSON.stringify(list))
 }
 
+//function get movie page
+function getMoviesByPage (page) {
+  const startIndex = (page - 1) * MOVIES_PER_PAHE
+  return movies.slice(startIndex, startIndex + MOVIES_PER_PAHE)
+}
+
+//function renderPagination
+function renderPaginator(amount) {
+  //計算總頁數
+  const numberOfPage = Math.ceil(amount / MOVIES_PER_PAHE)
+
+  //製作template
+  let rawhtml = ''
+  for (let page = 1; page <= numberOfPage; page++) {
+    rawhtml += `
+       <li class="page-item"><a class="page-link" href="#" data-page="${page}">${page}</a></li>
+    `
+  }
+  paginator.innerHTML = rawhtml
+}
+
+
 //show modal監聽器
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.matches('.btn-show-movie')) {
@@ -124,6 +152,7 @@ axios
 
     //法二 展開運算子 spread opeartor
     movies.push(...response.data.results) 
-    renderMovieList(movies)
+    renderPaginator(movies.length)
+    renderMovieList(getMoviesByPage(1))
   })
   .catch(error => console.log(error))
