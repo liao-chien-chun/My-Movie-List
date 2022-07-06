@@ -3,13 +3,11 @@ const INDEX_URL = BASE_URL + '/api/v1/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
 
 //存放電影資料
-const movies = []
+const favoriteMovie = JSON.parse(localStorage.getItem('favoriteMovies')) || []
 //選出節點
 const dataPanel = document.querySelector('#data-panel')
-//取得表單節點
-const searchForm = document.querySelector('#search-form')
-//取得input節點
-const searchInput = document.querySelector('#search-input')
+
+renderMovieList(favoriteMovie)
 
 //渲染電影清單
 function renderMovieList(data) {
@@ -33,7 +31,7 @@ function renderMovieList(data) {
                 data-bs-target="#movie"
                 data-id="${item.id}"
                 >More</button>
-              <button class="btn btn-info btn-add-favorite">+</button>
+              <button class="btn btn-danger btn-remove-favorite" data-id="${item.id}">x</button>
             </div>
           </div>
         </div>
@@ -63,25 +61,26 @@ function showMovieModal(id) {
 
 }
 
+//function remove movie
+function removeFavoriteMovies (id) {
+  if (!favoriteMovie || !favoriteMovie.length) return
+  const movieIndex = favoriteMovie.findIndex(movie => movie.id === id)
+  favoriteMovie.splice(movieIndex, 1)
+
+  //再傳回local
+  localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovie))
+
+  //即時更新畫面
+  renderMovieList(favoriteMovie)
+}
+
 //show modal監聽器
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.matches('.btn-show-movie')) {
     showMovieModal(Number(event.target.dataset.id))
+  } else if (event.target.matches('.btn-remove-favorite')) {
+    removeFavoriteMovies(Number(event.target.dataset.id))
   }
 })
 
-//取得電影資料
-axios
-  .get(INDEX_URL)
-  .then(response => {
-    //法一用迭代器for系列
-    // for (const movie of response.data.results) {
-    //   movies.push(movie)
-    // }
-    // console.log(movies.length) //測試看看數字是否正確
 
-    //法二 展開運算子 spread opeartor
-    movies.push(...response.data.results)
-    renderMovieList(movies)
-  })
-  .catch(error => console.log(error))
