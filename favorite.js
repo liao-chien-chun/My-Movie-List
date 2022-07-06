@@ -1,5 +1,5 @@
 const BASE_URL = 'https://movie-list.alphacamp.io'
-const INDEX_URL =  BASE_URL + '/api/v1/movies/'
+const INDEX_URL = BASE_URL + '/api/v1/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
 
 //存放電影資料
@@ -33,7 +33,7 @@ function renderMovieList(data) {
                 data-bs-target="#movie"
                 data-id="${item.id}"
                 >More</button>
-              <button class="btn btn-info btn-add-favorite" data-id="${item.id}">+</button>
+              <button class="btn btn-info btn-add-favorite">+</button>
             </div>
           </div>
         </div>
@@ -58,58 +58,16 @@ function showMovieModal(id) {
       modalDate.innerText = 'Release date: ' + data.release_date
       modalDescription.innerText = data.description
       modalImage.innerHTML = `<img src="${POSTER_URL + data.image
-        }" alt="movie-poster" class="img-fluid">` 
+        }" alt="movie-poster" class="img-fluid">`
     })
 
-}
-
-//function add to favorite
-function addToFavorite (id) {
-  const list = JSON.parse(localStorage.getItem('favoriteMovies')) || []
-  const movie = movies.find(movie => movie.id === id)
-  if (list.some(movie => movie.id === id )) {
-    return alert('此電影已經在蒐藏清單中')
-  }
-  list.push(movie)
-  localStorage.setItem('favoriteMovies', JSON.stringify(list))
 }
 
 //show modal監聽器
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.matches('.btn-show-movie')) {
     showMovieModal(Number(event.target.dataset.id))
-  } else if (event.target.matches('.btn-add-favorite')) {
-    addToFavorite(Number(event.target.dataset.id))
   }
-})
-
-//提交表單監聽器
-searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
-  //取消預設事件
-  event.preventDefault()
-  //用.value取得input的值,用trim()把空格去掉，全部轉成小寫方便比對
-  const keyword = searchInput.value.trim().toLowerCase()
-  //儲存符合塞選條件的項目
-  let filteredMovies = []
-
-  //塞選條件法一
-  // for (let movie of movies) {
-  //   if (movie.title.toLowerCase().includes(keyword)) {
-  //     filteredMovies.push(movie)
-  //   }
-  // }
-  //塞選條件法二 filter
-  filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(keyword))
-
-  //錯誤處理
-  // if (!keyword.length) {
-  //   return alert('請輸入有效字串')
-  // }
-  if (filteredMovies.length === 0) {
-    return alert(`您輸入的關鍵字： ${keyword} 沒有符合條件的電影`)
-  }
-
-  renderMovieList(filteredMovies)
 })
 
 //取得電影資料
@@ -123,7 +81,7 @@ axios
     // console.log(movies.length) //測試看看數字是否正確
 
     //法二 展開運算子 spread opeartor
-    movies.push(...response.data.results) 
+    movies.push(...response.data.results)
     renderMovieList(movies)
   })
   .catch(error => console.log(error))
