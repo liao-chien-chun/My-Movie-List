@@ -77,7 +77,8 @@ function removeFavoriteMovies (id) {
   localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovie))
 
   //即時更新畫面
-  renderMovieList(favoriteMovie)
+  renderMovieList(getMoviesByPage(1))
+  renderPagination(favoriteMovie.length)
 }
 
 //渲染分頁器
