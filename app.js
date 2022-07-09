@@ -17,6 +17,9 @@ const paginator = document.querySelector('#paginator')
 //每頁只12頁
 const MOVIES_PER_PAHE = 12
 
+//切換按鈕節點
+const changeMode = document.querySelector('#change-mode')
+
 let filteredMovies = []
 
 //渲染電影清單
@@ -152,6 +155,12 @@ paginator.addEventListener('click', function onPaginatorClicled(event) {
   //透過dataset
   const page = Number(event.target.dataset.page)
   renderMovieList(getMoviesByPage(page))
+})
+
+//切換按鈕監聽
+changeMode.addEventListener('click', function onClickedChangeMode(event) {
+  console.log(event.target)
+  
 })
 
 //取得電影資料

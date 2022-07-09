@@ -11,8 +11,6 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!--fontawesome-->
   <script src="https://kit.fontawesome.com/3054c7aa89.js" crossorigin="anonymous"></script>
-  <!--css-->
-  <script src="./style.css"></script>
 </head>
 <body>
   <!--NavBar-->
@@ -49,14 +47,23 @@
         </div>
       </form>
       <!--新增切換按鈕-->
-      <div class="col-sm-1" id="changeMode">
-        <div class="d-flex justify-content-center">
-          <i class="fa fa-bars mx-2" aria-hidden="true"></i>
-          <i class="fa fa-th mx-2" aria-hidden="true"></i>
-        </div>
+      <div class="col-sm-1" id="change-mode">
+        <i class="fa fa-bars mx-2" aria-hidden="true"></i>
+        <i class="fa fa-th mx-2" aria-hidden="true"></i>
       </div>
     </div>
     
+
+    <!--list-->
+    <!-- <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between">
+        <h5>movie title</h5>
+        <div>
+          <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal" data-bs-target="#movie">More</button>
+          <button class="btn btn-info btn-add-favorite">+</button>
+        </div>
+      </li>
+    </ul> -->
 
     <!--card-->
     <div class="row" id="data-panel">
