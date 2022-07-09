@@ -160,7 +160,7 @@ paginator.addEventListener('click', function onPaginatorClicled(event) {
 //切換按鈕監聽
 changeMode.addEventListener('click', function onClickedChangeMode(event) {
   console.log(event.target)
-  
+
 })
 
 //取得電影資料
@@ -179,3 +179,5 @@ axios
     renderMovieList(getMoviesByPage(1))
   })
   .catch(error => console.log(error))
+
+ 

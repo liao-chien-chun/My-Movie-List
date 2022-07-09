@@ -48,8 +48,10 @@
       </form>
       <!--新增切換按鈕-->
       <div class="col-sm-1" id="change-mode">
-        <i class="fa fa-bars mx-2" aria-hidden="true"></i>
-        <i class="fa fa-th mx-2" aria-hidden="true"></i>
+        <i class="fa fa-bars mx-2" aria-hidden="true" id="list-mode-button"></i>
+        <i class="fa fa-th mx-2"       aria-hidden="true"
+        id="card-mode-button"
+        ></i>
       </div>
     </div>
     
@@ -66,7 +68,7 @@
     </ul> -->
 
     <!--card-->
-    <div class="row" id="data-panel">
+    <div class="row" id="data-panel" data-mode="card-mode">
       <!--render Movie List-->
       <!-- <div class="col-sm-3">
         <div class="mb-2">
