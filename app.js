@@ -19,15 +19,18 @@ const MOVIES_PER_PAHE = 12
 
 //切換按鈕節點
 const changeMode = document.querySelector('#change-mode')
+//記錄當前頁面
+let currentPage = 1
 
 let filteredMovies = []
 
 //渲染電影清單
 function renderMovieList(data) {
-  let rawhtml = ''
-  data.forEach(item => {
-    //title, image, id 
-    rawhtml += `
+  if (dataPanel.dataset.mode === 'card-mode') {
+    let rawhtml = ''
+    data.forEach(item => {
+      //title, image, id 
+      rawhtml += `
       <div class="col-sm-3">
         <div class="mb-2">
           <div class="card">
@@ -49,8 +52,24 @@ function renderMovieList(data) {
           </div>
         </div>
       </div>`
-  });
-  dataPanel.innerHTML = rawhtml
+    })
+    dataPanel.innerHTML = rawhtml
+  } else if (dataPanel.dataset.mode === 'list-mode') {
+    let rawHtml = `<ul class="list-group">`
+    data.forEach(item => {
+      rawHtml += `
+        <li class="list-group-item d-flex justify-content-between">
+        <h5>${item.title}</h5>
+        <div>
+          <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal" data-bs-target="#movie" "${item.id}">More</button>
+          <button class="btn btn-info btn-add-favorite" "${item.id}">+</button>
+        </div>
+      </li>
+      `
+    })
+    rawHtml += '</ul>'
+    dataPanel.innerHTML = rawHtml
+  }
 }
 
 //function showmodal
