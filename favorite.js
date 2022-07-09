@@ -7,7 +7,13 @@ const favoriteMovie = JSON.parse(localStorage.getItem('favoriteMovies')) || []
 //選出節點
 const dataPanel = document.querySelector('#data-panel')
 
-renderMovieList(favoriteMovie)
+//選出分頁器
+const paginator = document.querySelector('#paginator')
+//每頁最多12個
+const MOVIES_PER_PAHE = 12
+
+renderMovieList(getMoviesByPage(1))
+renderPagination(favoriteMovie.length)
 
 //渲染電影清單
 function renderMovieList(data) {
@@ -74,6 +80,28 @@ function removeFavoriteMovies (id) {
   renderMovieList(favoriteMovie)
 }
 
+//渲染分頁器
+function renderPagination(amount) {
+  //計算要幾頁
+  const totalPage = Math.ceil(amount / MOVIES_PER_PAHE)
+
+  let rawhtml = ''
+  for (let page = 1; page <= totalPage; page++) {
+    rawhtml += `
+      <li class="page-item">
+      <a class="page-link" href="#" data-page="${page}">${page}</a></li>
+    `
+  }
+  paginator.innerHTML = rawhtml
+}
+
+//取得這一頁的電影數量
+function getMoviesByPage (page) {
+  const data = favoriteMovie.length ? favoriteMovie : []
+  const startIndex = (page - 1) * MOVIES_PER_PAHE
+  return data.slice(startIndex, startIndex + MOVIES_PER_PAHE)
+}
+
 //show modal監聽器
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   if (event.target.matches('.btn-show-movie')) {
@@ -83,4 +111,13 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
   }
 })
 
+//監聽分頁器
+paginator.addEventListener('click', function onClickPaginator(event) {
+  //點擊不是a標籤結束
+  if (event.target.tagName !== "A") return
 
+  //透過datasett重新渲染
+  const page = Number(event.target.dataset.page)
+  renderMovieList(getMoviesByPage(page))
+  renderPagination(favoriteMovie.length)
+})
