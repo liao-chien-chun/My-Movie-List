@@ -168,8 +168,9 @@ searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
     return alert(`您輸入的關鍵字： ${keyword} 沒有符合條件的電影`)
   }
 
+  currentPage = 1
   renderPaginator(filteredMovies.length)
-  renderMovieList(getMoviesByPage(1))
+  renderMovieList(getMoviesByPage(currentPage))
 })
 
 //分頁監聽器
@@ -179,17 +180,18 @@ paginator.addEventListener('click', function onPaginatorClicled(event) {
 
   //透過dataset
   const page = Number(event.target.dataset.page)
-  renderMovieList(getMoviesByPage(page))
+  currentPage = page
+  renderMovieList(getMoviesByPage(currentPage))
 })
 
 //切換按鈕監聽
 changeMode.addEventListener('click', function onClickedChangeMode(event) {
   if (event.target.matches('#list-mode-button')) {
     changDisplayMode('list-mode')
-    renderMovieList(getMoviesByPage(1))
+    renderMovieList(getMoviesByPage(currentPage))
   } else if (event.target.matches('#card-mode-button')) {
     changDisplayMode('card-mode')
-    renderMovieList(getMoviesByPage(1))
+    renderMovieList(getMoviesByPage(currentPage))
   }
 })
 
@@ -206,7 +208,7 @@ axios
     //法二 展開運算子 spread opeartor
     movies.push(...response.data.results) 
     renderPaginator(movies.length)
-    renderMovieList(getMoviesByPage(1))
+    renderMovieList(getMoviesByPage(currentPage))
   })
   .catch(error => console.log(error))
 
