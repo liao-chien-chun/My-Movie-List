@@ -126,6 +126,12 @@ function renderPaginator(amount) {
   paginator.innerHTML = rawhtml
 }
 
+//改變模式
+function changDisplayMode (datamode) {
+  if (dataPanel.dataset.mode === datamode) return
+    dataPanel.dataset.mode = datamode
+}
+
 
 //show modal監聽器
 dataPanel.addEventListener('click', function onPanelClicked(event) {
@@ -178,8 +184,13 @@ paginator.addEventListener('click', function onPaginatorClicled(event) {
 
 //切換按鈕監聽
 changeMode.addEventListener('click', function onClickedChangeMode(event) {
-  console.log(event.target)
-
+  if (event.target.matches('#list-mode-button')) {
+    changDisplayMode('list-mode')
+    renderMovieList(getMoviesByPage(1))
+  } else if (event.target.matches('#card-mode-button')) {
+    changDisplayMode('card-mode')
+    renderMovieList(getMoviesByPage(1))
+  }
 })
 
 //取得電影資料
